@@ -1,0 +1,1379 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>NutriAI – Your Personal AI Nutrition Coach</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+
+<!-- ====================================================
+  ONBOARDING MODAL
+===================================================== -->
+<div id="onboarding">
+  <div class="onboarding-card">
+    <div class="onboarding-logo">
+      <div class="logo-icon">N</div>
+      <div class="logo-text">
+        <h1>NutriAI</h1>
+        <span>AI Nutrition Coach</span>
+      </div>
+    </div>
+    <h2 class="onboarding-title">Welcome! Let's personalize your experience.</h2>
+    <p class="onboarding-sub">Tell us a bit about yourself so NutriAI can give you personalized nutrition guidance.</p>
+    <form id="onboardingForm" class="profile-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Age</label>
+          <input type="number" class="form-input" id="ob-age" placeholder="e.g. 28" min="10" max="100" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Gender</label>
+          <select class="form-select" id="ob-gender" required>
+            <option value="">Select...</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Height (cm)</label>
+          <input type="number" class="form-input" id="ob-height" placeholder="e.g. 170" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Weight (kg)</label>
+          <input type="number" class="form-input" id="ob-weight" placeholder="e.g. 70" required />
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Activity Level</label>
+        <select class="form-select" id="ob-activity" required>
+          <option value="">Select...</option>
+          <option value="sedentary">Sedentary (little/no exercise)</option>
+          <option value="light">Lightly Active (1-3 days/week)</option>
+          <option value="moderate">Moderately Active (3-5 days/week)</option>
+          <option value="active">Very Active (6-7 days/week)</option>
+          <option value="extra">Extra Active (physical job + training)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Fitness Goal</label>
+        <div class="radio-group">
+          <label class="radio-label"><input type="radio" name="ob-goal" value="weight_loss" />Weight Loss</label>
+          <label class="radio-label"><input type="radio" name="ob-goal" value="maintenance" />Maintenance</label>
+          <label class="radio-label"><input type="radio" name="ob-goal" value="muscle_gain" />Muscle Gain</label>
+          <label class="radio-label"><input type="radio" name="ob-goal" value="weight_gain" />Weight Gain</label>
+          <label class="radio-label"><input type="radio" name="ob-goal" value="general" />General Fitness</label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Dietary Preference</label>
+        <div class="radio-group">
+          <label class="radio-label"><input type="radio" name="ob-diet" value="non_veg" />Non-Vegetarian</label>
+          <label class="radio-label"><input type="radio" name="ob-diet" value="vegetarian" />Vegetarian</label>
+          <label class="radio-label"><input type="radio" name="ob-diet" value="vegan" />Vegan</label>
+          <label class="radio-label"><input type="radio" name="ob-diet" value="eggetarian" />Eggetarian</label>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary btn-lg w-full">Get Started →</button>
+    </form>
+  </div>
+</div>
+
+<!-- ====================================================
+  HEADER
+===================================================== -->
+<div id="header">
+  <div class="header-inner">
+    <div class="logo" onclick="navigate('home')">
+      <div class="logo-icon">N</div>
+      <div class="logo-text">
+        <h1>NutriAI</h1>
+        <span>AI Nutrition Coach</span>
+      </div>
+    </div>
+    <nav>
+      <button class="nav-link active" onclick="navigate('home')" data-page="home">Dashboard</button>
+      <button class="nav-link" onclick="navigate('chat')" data-page="chat">AI Coach</button>
+      <button class="nav-link" onclick="navigate('analyzer')" data-page="analyzer">Meal Analyzer</button>
+      <button class="nav-link" onclick="navigate('mealplan')" data-page="mealplan">Meal Plans</button>
+      <button class="nav-link" onclick="navigate('profile')" data-page="profile">Profile</button>
+    </nav>
+    <div class="header-actions">
+      <button class="btn-icon" id="themeToggle" title="Toggle theme">🌙</button>
+      <button class="btn btn-primary btn-sm" onclick="startNewChat()">+ New Chat</button>
+      <button class="btn-icon hamburger" id="hamburgerBtn" title="Menu">☰</button>
+    </div>
+  </div>
+</div>
+
+<!-- Mobile Nav -->
+<div class="mobile-nav" id="mobileNav" onclick="closeMobileNav(event)">
+  <div class="mobile-nav-menu">
+    <div class="mobile-nav-link active" onclick="navigate('home');closeMobileNav()" data-page="home">📊 Dashboard</div>
+    <div class="mobile-nav-link" onclick="navigate('chat');closeMobileNav()" data-page="chat">🤖 AI Coach</div>
+    <div class="mobile-nav-link" onclick="navigate('analyzer');closeMobileNav()" data-page="analyzer">🍽 Meal Analyzer</div>
+    <div class="mobile-nav-link" onclick="navigate('mealplan');closeMobileNav()" data-page="mealplan">📅 Meal Plans</div>
+    <div class="mobile-nav-link" onclick="navigate('profile');closeMobileNav()" data-page="profile">👤 Profile</div>
+  </div>
+</div>
+
+<!-- Toast Container -->
+<div id="toast-container"></div>
+
+<!-- ====================================================
+  MAIN CONTENT
+===================================================== -->
+<main>
+
+  <!-- HOME PAGE -->
+  <div class="page active" id="page-home">
+
+    <!-- HERO -->
+    <section id="hero">
+      <div class="container">
+        <div class="hero-inner">
+          <div class="hero-content">
+            <div class="hero-badge">✨ Powered by Groq AI</div>
+            <h1 class="hero-title">Your Personal<br/><span>AI Nutrition</span><br/>Coach</h1>
+            <p class="hero-subtitle">Understand your food. Track your nutrition. Make smarter choices — all powered by cutting-edge AI.</p>
+            <div class="hero-buttons">
+              <button class="btn btn-primary btn-lg" onclick="navigate('chat')">🤖 Start AI Coach</button>
+              <button class="btn btn-secondary btn-lg" onclick="navigate('analyzer')">🍽 Analyze a Meal</button>
+            </div>
+            <div class="hero-stats">
+              <div class="hero-stat-item">
+                <div class="hero-stat-num">98%</div>
+                <div class="hero-stat-label">Accuracy Rate</div>
+              </div>
+              <div class="hero-stat-item">
+                <div class="hero-stat-num">500+</div>
+                <div class="hero-stat-label">Foods Recognized</div>
+              </div>
+              <div class="hero-stat-item">
+                <div class="hero-stat-num">24/7</div>
+                <div class="hero-stat-label">AI Availability</div>
+              </div>
+            </div>
+          </div>
+          <div class="hero-visual">
+            <div class="hero-phone">
+              <div class="phone-notch"></div>
+              <div class="phone-screen">
+                <div class="phone-bubble ai">👋 Hi! I'm NutriAI. What did you eat today?</div>
+                <div class="phone-bubble user">2 rotis, dal and salad</div>
+                <div class="phone-bubble ai">Great choice! Here's your nutrition breakdown 👇</div>
+                <div class="phone-macro-card">
+                  <div class="phone-macro-title">🔥 Estimated Nutrition</div>
+                  <div class="phone-macro-row">
+                    <div class="phone-macro-item"><div class="phone-macro-val">420</div><div class="phone-macro-lbl">kcal</div></div>
+                    <div class="phone-macro-item"><div class="phone-macro-val">18g</div><div class="phone-macro-lbl">Protein</div></div>
+                    <div class="phone-macro-item"><div class="phone-macro-val">68g</div><div class="phone-macro-lbl">Carbs</div></div>
+                    <div class="phone-macro-item"><div class="phone-macro-val">8g</div><div class="phone-macro-lbl">Fat</div></div>
+                  </div>
+                </div>
+                <div class="phone-bubble ai">Health Score: 8/10 ✅</div>
+              </div>
+            </div>
+            <div class="hero-float hero-float-1"><span>🔥</span>2,450 kcal target</div>
+            <div class="hero-float hero-float-2"><span>💪</span>140g protein/day</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DASHBOARD -->
+    <section class="section">
+      <div class="container">
+        <div class="dashboard-welcome">
+          <h2>Good to see you 👋</h2>
+          <p id="dashWelcomeSub">Your personalized nutrition targets are ready.</p>
+          <div class="dash-deco">🥗</div>
+        </div>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
+          <div>
+            <div class="section-title" style="margin-bottom:0">Daily Targets</div>
+            <div class="section-subtitle" style="margin-bottom:0">Based on your profile &amp; goal</div>
+          </div>
+          <div id="goalBadge" class="badge badge-green">General Fitness</div>
+        </div>
+
+        <div class="grid-4" id="nutritionCards">
+          <div class="stat-card">
+            <div class="stat-icon" style="background:#fef3c7">🔥</div>
+            <div class="stat-label">Calories</div>
+            <div class="stat-value" id="dashCalories">—</div>
+            <div class="stat-unit">kcal / day</div>
+            <div class="progress-bar"><div class="progress-fill" id="calProgress" style="width:0%;background:linear-gradient(90deg,#f59e0b,#ef4444)"></div></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon" style="background:#d1fae5">💪</div>
+            <div class="stat-label">Protein</div>
+            <div class="stat-value" id="dashProtein">—</div>
+            <div class="stat-unit">grams / day</div>
+            <div class="progress-bar"><div class="progress-fill" id="proProgress" style="width:0%;background:linear-gradient(90deg,#10b981,#059669)"></div></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon" style="background:#dbeafe">🌾</div>
+            <div class="stat-label">Carbohydrates</div>
+            <div class="stat-value" id="dashCarbs">—</div>
+            <div class="stat-unit">grams / day</div>
+            <div class="progress-bar"><div class="progress-fill" id="carbProgress" style="width:0%;background:linear-gradient(90deg,#3b82f6,#6366f1)"></div></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon" style="background:#ede9fe">🥑</div>
+            <div class="stat-label">Fat</div>
+            <div class="stat-value" id="dashFat">—</div>
+            <div class="stat-unit">grams / day</div>
+            <div class="progress-bar"><div class="progress-fill" id="fatProgress" style="width:0%;background:linear-gradient(90deg,#7c3aed,#a78bfa)"></div></div>
+          </div>
+        </div>
+
+        <div class="grid-2 mt-4">
+          <div class="stat-card">
+            <div class="stat-icon" style="background:#e0f2fe">💧</div>
+            <div class="stat-label">Water Intake</div>
+            <div class="stat-value" id="dashWater">—</div>
+            <div class="stat-unit">liters / day</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon" style="background:#fce7f3">⚡</div>
+            <div class="stat-label">BMR (Base Rate)</div>
+            <div class="stat-value" id="dashBMR">—</div>
+            <div class="stat-unit">kcal at rest</div>
+          </div>
+        </div>
+
+        <div class="disclaimer-box mt-4">
+          <span>ℹ️</span>
+          <span>These values are <strong>estimates</strong> based on standard formulas (Mifflin-St Jeor) and should not replace professional dietary advice. Consult a registered dietitian for personalized guidance.</span>
+        </div>
+
+        <!-- QUICK ACTIONS -->
+        <div style="margin-top:40px;">
+          <div class="section-title mb-2">Quick Actions</div>
+          <div class="section-subtitle">Get instant AI-powered nutrition insights</div>
+          <div class="action-grid">
+            <div class="action-card" onclick="quickAction('analyze')">
+              <div class="action-emoji">🍽</div>
+              <div class="action-title">Analyze My Meal</div>
+              <div class="action-desc">Log what you ate</div>
+            </div>
+            <div class="action-card" onclick="quickAction('protein')">
+              <div class="action-emoji">💪</div>
+              <div class="action-title">Protein Calculator</div>
+              <div class="action-desc">Optimal protein intake</div>
+            </div>
+            <div class="action-card" onclick="quickAction('calorie')">
+              <div class="action-emoji">🔥</div>
+              <div class="action-title">Calorie Guidance</div>
+              <div class="action-desc">Daily calorie plan</div>
+            </div>
+            <div class="action-card" onclick="quickAction('mealplan')">
+              <div class="action-emoji">📅</div>
+              <div class="action-title">Create Meal Plan</div>
+              <div class="action-desc">Full day meal plan</div>
+            </div>
+            <div class="action-card" onclick="quickAction('alternatives')">
+              <div class="action-emoji">🥗</div>
+              <div class="action-title">Healthy Alternatives</div>
+              <div class="action-desc">Smarter food swaps</div>
+            </div>
+            <div class="action-card" onclick="quickAction('preworkout')">
+              <div class="action-emoji">🏋️</div>
+              <div class="action-title">Pre-Workout Meal</div>
+              <div class="action-desc">Fuel your training</div>
+            </div>
+            <div class="action-card" onclick="quickAction('postworkout')">
+              <div class="action-emoji">🌙</div>
+              <div class="action-title">Post-Workout Meal</div>
+              <div class="action-desc">Recovery nutrition</div>
+            </div>
+            <div class="action-card" onclick="quickAction('tips')">
+              <div class="action-emoji">💡</div>
+              <div class="action-title">Nutrition Tips</div>
+              <div class="action-desc">Expert advice</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- CHAT PAGE -->
+  <div class="page" id="page-chat">
+    <div class="chat-sidebar" id="chatSidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-title">Conversations</div>
+        <button class="btn btn-primary btn-sm w-full" onclick="startNewChat()">+ New Chat</button>
+        <button class="btn btn-secondary btn-sm w-full" onclick="clearAllChats()">🗑 Clear All</button>
+      </div>
+      <div class="chat-history-list" id="chatHistoryList"></div>
+      <div class="sidebar-footer">
+        <div style="font-size:0.72rem;color:var(--text3)">Chats saved locally</div>
+      </div>
+    </div>
+    <div class="chat-main">
+      <div class="chat-header">
+        <div>
+          <div class="chat-header-title">🤖 NutriAI Coach</div>
+          <div class="chat-header-sub" id="chatStatusBar">Ready to help with your nutrition goals</div>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-secondary btn-sm" onclick="clearCurrentChat()">🗑 Clear</button>
+          <button class="btn-icon" onclick="toggleSidebar()" id="sidebarToggleBtn" title="Toggle history" style="display:none">☰</button>
+        </div>
+      </div>
+      <div class="chat-messages" id="chatMessages">
+        <div class="welcome-state" id="chatWelcome">
+          <div class="welcome-icon">🥦</div>
+          <h3>Your AI Nutrition Coach is ready</h3>
+          <p style="max-width:320px">Ask me anything about nutrition, meals, calories, or your fitness goals.</p>
+        </div>
+      </div>
+      <div class="chat-suggested" id="suggestedChips">
+        <div class="suggest-chip" onclick="sendSuggestion('How much protein should I eat daily?')">💪 Daily protein needs</div>
+        <div class="suggest-chip" onclick="sendSuggestion('Analyze my breakfast: 2 eggs, toast and orange juice')">🍳 Analyze breakfast</div>
+        <div class="suggest-chip" onclick="sendSuggestion('Create a vegetarian muscle gain meal plan for me')">📅 Meal plan</div>
+        <div class="suggest-chip" onclick="sendSuggestion('What should I eat before a workout?')">🏋️ Pre-workout food</div>
+        <div class="suggest-chip" onclick="sendSuggestion('Give me 5 high-protein dinner ideas')">🌙 High-protein dinner</div>
+      </div>
+      <div class="chat-input-area">
+        <div class="chat-input-wrap">
+          <textarea id="chatInput" placeholder="Ask about nutrition, meals, calories..." rows="1"></textarea>
+          <button id="sendBtn" onclick="sendMessage()">➤</button>
+        </div>
+        <div style="font-size:0.7rem;color:var(--text3);margin-top:6px;text-align:center">Enter to send · Shift+Enter for new line</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MEAL ANALYZER PAGE -->
+  <div class="page" id="page-analyzer">
+    <div class="container section">
+      <div class="section-title">🍽 Meal Analyzer</div>
+      <div class="section-subtitle">Describe what you ate and get an instant AI-powered nutrition breakdown</div>
+
+      <div class="card analyzer-input-card">
+        <div class="card-header">
+          <div class="card-title">What did you eat?</div>
+          <div class="card-subtitle">Be as specific as possible for better estimates (e.g. portions, cooking method)</div>
+        </div>
+        <textarea class="analyzer-textarea" id="mealInput" placeholder="Example: 2 rotis, paneer curry (150g), dal (1 bowl), one banana and a glass of milk..."></textarea>
+        <div style="margin-top:14px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+          <button class="btn btn-primary" id="analyzeMealBtn" onclick="analyzeMeal()">🔍 Analyze Meal</button>
+          <button class="btn btn-secondary" onclick="document.getElementById('mealInput').value=''">Clear</button>
+          <div style="font-size:0.78rem;color:var(--text3)">All values are estimates</div>
+        </div>
+      </div>
+
+      <div id="analyzerResult"></div>
+    </div>
+  </div>
+
+  <!-- MEAL PLAN PAGE -->
+  <div class="page" id="page-mealplan">
+    <div class="container section">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:14px;margin-bottom:24px;">
+        <div>
+          <div class="section-title">📅 Your Meal Plan</div>
+          <div class="section-subtitle">Personalized based on your profile, goals, and dietary preferences</div>
+        </div>
+        <button class="btn btn-primary" id="generatePlanBtn" onclick="generateMealPlan()">✨ Generate My Meal Plan</button>
+      </div>
+      <div id="mealPlanContent">
+        <div class="empty-plan">
+          <div class="empty-plan-icon">📋</div>
+          <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:8px">No meal plan yet</h3>
+          <p style="font-size:0.88rem;color:var(--text2);max-width:300px;margin:0 auto 20px">Click "Generate My Meal Plan" to get a personalized full-day meal plan tailored to your goals.</p>
+          <button class="btn btn-primary" onclick="generateMealPlan()">✨ Generate Meal Plan</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROFILE PAGE -->
+  <div class="page" id="page-profile">
+    <div class="container section">
+      <div class="section-title">👤 Your Profile</div>
+      <div class="section-subtitle">Update your details to get accurate nutrition recommendations</div>
+
+      <div class="profile-grid-wrap">
+        <div class="card" style="height:fit-content">
+          <div class="card-header">
+            <div class="card-title">Profile Summary</div>
+          </div>
+          <div id="profileSummary" style="display:flex;flex-direction:column;gap:10px;">
+            <div style="text-align:center;padding:20px;color:var(--text2)">No profile saved yet.</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Edit Profile</div>
+            <div class="card-subtitle">Your information is stored locally on your device</div>
+          </div>
+          <form id="profileForm" class="profile-form">
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Age</label>
+                <input type="number" class="form-input" id="p-age" placeholder="e.g. 28" min="10" max="100" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Gender</label>
+                <select class="form-select" id="p-gender">
+                  <option value="">Select...</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Height (cm)</label>
+                <input type="number" class="form-input" id="p-height" placeholder="e.g. 170" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Weight (kg)</label>
+                <input type="number" class="form-input" id="p-weight" placeholder="e.g. 70" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Activity Level</label>
+              <select class="form-select" id="p-activity">
+                <option value="">Select...</option>
+                <option value="sedentary">Sedentary (little/no exercise)</option>
+                <option value="light">Lightly Active (1-3 days/week)</option>
+                <option value="moderate">Moderately Active (3-5 days/week)</option>
+                <option value="active">Very Active (6-7 days/week)</option>
+                <option value="extra">Extra Active (physical job + training)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Fitness Goal</label>
+              <div class="radio-group">
+                <label class="radio-label"><input type="radio" name="p-goal" value="weight_loss" />Weight Loss</label>
+                <label class="radio-label"><input type="radio" name="p-goal" value="maintenance" />Maintenance</label>
+                <label class="radio-label"><input type="radio" name="p-goal" value="muscle_gain" />Muscle Gain</label>
+                <label class="radio-label"><input type="radio" name="p-goal" value="weight_gain" />Weight Gain</label>
+                <label class="radio-label"><input type="radio" name="p-goal" value="general" />General Fitness</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Dietary Preference</label>
+              <div class="radio-group">
+                <label class="radio-label"><input type="radio" name="p-diet" value="non_veg" />Non-Vegetarian</label>
+                <label class="radio-label"><input type="radio" name="p-diet" value="vegetarian" />Vegetarian</label>
+                <label class="radio-label"><input type="radio" name="p-diet" value="vegan" />Vegan</label>
+                <label class="radio-label"><input type="radio" name="p-diet" value="eggetarian" />Eggetarian</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Allergies / Intolerances</label>
+              <div class="checkbox-group">
+                <label class="checkbox-label"><input type="checkbox" name="p-allergy" value="gluten" /> Gluten</label>
+                <label class="checkbox-label"><input type="checkbox" name="p-allergy" value="dairy" /> Dairy</label>
+                <label class="checkbox-label"><input type="checkbox" name="p-allergy" value="nuts" /> Nuts</label>
+                <label class="checkbox-label"><input type="checkbox" name="p-allergy" value="soy" /> Soy</label>
+                <label class="checkbox-label"><input type="checkbox" name="p-allergy" value="eggs" /> Eggs</label>
+                <label class="checkbox-label"><input type="checkbox" name="p-allergy" value="shellfish" /> Shellfish</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Food Preferences / Cuisine</label>
+              <input type="text" class="form-input" id="p-prefs" placeholder="e.g. Indian, Mediterranean, love spicy food..." />
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg">💾 Save Profile</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- ====================================================
+  JAVASCRIPT
+===================================================== -->
+<script>
+// ============================================================
+// 1. CONFIGURATION — API calls go through Flask backend (/api/chat)
+// ============================================================
+const API_URL = "/api/chat";
+
+// ============================================================
+// 2. APPLICATION STATE
+// ============================================================
+const state = {
+  profile: null,
+  currentChatId: null,
+  chats: {},
+  theme: 'light',
+  isTyping: false
+};
+
+// ============================================================
+// 3. DOM REFERENCES
+// ============================================================
+const $ = id => document.getElementById(id);
+const chatMessages   = $('chatMessages');
+const chatInput      = $('chatInput');
+const sendBtn        = $('sendBtn');
+const historyList    = $('chatHistoryList');
+const chatWelcome    = $('chatWelcome');
+
+// ============================================================
+// 4. LOCALSTORAGE HELPERS
+// ============================================================
+function saveToLS(key, value) {
+  try { localStorage.setItem('nutriai_' + key, JSON.stringify(value)); } catch(e) {}
+}
+function loadFromLS(key) {
+  try { const v = localStorage.getItem('nutriai_' + key); return v ? JSON.parse(v) : null; } catch(e) { return null; }
+}
+
+// ============================================================
+// 5. PROFILE & NUTRITION CALCULATIONS
+// ============================================================
+function calcBMR(profile) {
+  const { weight, height, age, gender } = profile;
+  if (!weight || !height || !age) return 0;
+  if (gender === 'female') return Math.round(10 * weight + 6.25 * height - 5 * age - 161);
+  return Math.round(10 * weight + 6.25 * height - 5 * age + 5);
+}
+
+function activityMultiplier(level) {
+  const map = { sedentary: 1.2, light: 1.375, moderate: 1.55, active: 1.725, extra: 1.9 };
+  return map[level] || 1.375;
+}
+
+function calcTDEE(profile) {
+  return Math.round(calcBMR(profile) * activityMultiplier(profile.activity));
+}
+
+function calcTargets(profile) {
+  const tdee = calcTDEE(profile);
+  let calories = tdee;
+  if (profile.goal === 'weight_loss')  calories = Math.round(tdee * 0.80);
+  if (profile.goal === 'muscle_gain')  calories = Math.round(tdee * 1.10);
+  if (profile.goal === 'weight_gain')  calories = Math.round(tdee * 1.15);
+
+  const weight = profile.weight || 70;
+  let proteinFactor = 1.6;
+  if (profile.goal === 'muscle_gain') proteinFactor = 2.0;
+  if (profile.goal === 'weight_loss') proteinFactor = 1.8;
+
+  const protein = Math.round(weight * proteinFactor);
+  const fat     = Math.round((calories * 0.25) / 9);
+  const carbs   = Math.round((calories - protein * 4 - fat * 9) / 4);
+  const water   = parseFloat((weight * 0.033).toFixed(1));
+  const bmr     = calcBMR(profile);
+
+  return { calories, protein, fat, carbs, water, bmr };
+}
+
+function goalLabel(goal) {
+  const map = {
+    weight_loss: 'Weight Loss', maintenance: 'Maintenance',
+    muscle_gain: 'Muscle Gain', weight_gain: 'Weight Gain', general: 'General Fitness'
+  };
+  return map[goal] || 'General Fitness';
+}
+
+function dietLabel(diet) {
+  const map = { non_veg: 'Non-Vegetarian', vegetarian: 'Vegetarian', vegan: 'Vegan', eggetarian: 'Eggetarian' };
+  return map[diet] || 'Not specified';
+}
+
+function activityLabel(a) {
+  const map = { sedentary:'Sedentary', light:'Lightly Active', moderate:'Moderately Active', active:'Very Active', extra:'Extra Active' };
+  return map[a] || 'Not specified';
+}
+
+// ============================================================
+// 6. API CALL — routes through Flask backend
+// ============================================================
+async function askNutritionAI(messages) {
+  const response = await fetch(API_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ messages, temperature: 0.7, max_tokens: 1500 })
+  });
+
+  if (!response.ok) {
+    const err = await response.json().catch(() => ({}));
+    const code = response.status;
+    if (code === 401) throw new Error('Invalid API key. Please check your Groq API key.');
+    if (code === 429) throw new Error('Rate limit reached. Please wait a moment and try again.');
+    if (code === 503) throw new Error('Groq service is temporarily unavailable. Try again shortly.');
+    throw new Error(err.error || `API error (${code}). Please try again.`);
+  }
+
+  const data = await response.json();
+  if (!data.content) throw new Error('Invalid response from AI. Please try again.');
+  return data.content;
+}
+
+function buildSystemPrompt() {
+  let base = `You are NutriAI, an intelligent personal nutrition assistant. Provide practical, personalized nutrition guidance. Estimate calories and macronutrients when exact information is unavailable and clearly label them as ESTIMATES. Explain recommendations clearly. Do not diagnose medical conditions or present medical advice as certainty. For serious health conditions, recommend consulting a qualified healthcare professional. Use bullet points and structured responses. Keep responses concise but complete.`;
+
+  if (state.profile) {
+    const p = state.profile;
+    const t = calcTargets(p);
+    base += `\n\nUser Profile:\n- Age: ${p.age || 'N/A'}, Gender: ${p.gender || 'N/A'}\n- Height: ${p.height || 'N/A'}cm, Weight: ${p.weight || 'N/A'}kg\n- Activity Level: ${activityLabel(p.activity)}\n- Goal: ${goalLabel(p.goal)}\n- Diet: ${dietLabel(p.diet)}\n- Allergies: ${p.allergies?.length ? p.allergies.join(', ') : 'None'}\n- Food preferences: ${p.prefs || 'None specified'}\n- Daily targets: ${t.calories} kcal, ${t.protein}g protein, ${t.carbs}g carbs, ${t.fat}g fat\nAlways personalize responses to this profile.`;
+  }
+  return base;
+}
+
+// ============================================================
+// 7. CHAT FUNCTIONS
+// ============================================================
+function generateChatId() {
+  return 'chat_' + Date.now() + '_' + Math.random().toString(36).substr(2,5);
+}
+
+function startNewChat() {
+  const id = generateChatId();
+  state.currentChatId = id;
+  state.chats[id] = { id, title: 'New Chat', messages: [], created: new Date().toISOString() };
+  saveChats();
+  renderChatMessages();
+  renderChatHistory();
+  navigate('chat');
+  chatInput.focus();
+}
+
+function loadChat(id) {
+  state.currentChatId = id;
+  renderChatMessages();
+  renderChatHistory();
+}
+
+function deleteChat(id, e) {
+  e.stopPropagation();
+  delete state.chats[id];
+  if (state.currentChatId === id) {
+    const remaining = Object.keys(state.chats);
+    state.currentChatId = remaining.length ? remaining[remaining.length - 1] : null;
+  }
+  saveChats();
+  renderChatMessages();
+  renderChatHistory();
+}
+
+function clearAllChats() {
+  if (!confirm('Clear all chat history?')) return;
+  state.chats = {};
+  state.currentChatId = null;
+  saveChats();
+  renderChatMessages();
+  renderChatHistory();
+  showToast('All chats cleared', 'info');
+}
+
+function clearCurrentChat() {
+  if (!state.currentChatId) return;
+  state.chats[state.currentChatId].messages = [];
+  saveChats();
+  renderChatMessages();
+  showToast('Chat cleared', 'info');
+}
+
+function saveChats() { saveToLS('chats', state.chats); }
+function loadChats() {
+  const saved = loadFromLS('chats');
+  if (saved) state.chats = saved;
+}
+
+function renderChatHistory() {
+  historyList.innerHTML = '';
+  const ids = Object.keys(state.chats).sort((a,b) => (state.chats[b].created > state.chats[a].created ? 1 : -1));
+  if (ids.length === 0) {
+    historyList.innerHTML = '<div style="padding:12px;color:var(--text3);font-size:0.78rem;text-align:center">No conversations yet</div>';
+    return;
+  }
+  ids.forEach(id => {
+    const c = state.chats[id];
+    const div = document.createElement('div');
+    div.className = 'history-item' + (id === state.currentChatId ? ' active' : '');
+    div.onclick = () => loadChat(id);
+    const date = new Date(c.created);
+    div.innerHTML = `
+      <div class="history-title">${escHtml(c.title)}</div>
+      <div class="history-date">${date.toLocaleDateString('en-US',{month:'short',day:'numeric'})}</div>
+      <button class="history-delete" onclick="deleteChat('${id}',event)" title="Delete">✕</button>
+    `;
+    historyList.appendChild(div);
+  });
+}
+
+function renderChatMessages() {
+  chatMessages.innerHTML = '';
+  if (!state.currentChatId || !state.chats[state.currentChatId] || state.chats[state.currentChatId].messages.length === 0) {
+    chatMessages.appendChild(createWelcomeState());
+    return;
+  }
+  const chat = state.chats[state.currentChatId];
+  chat.messages.forEach(msg => {
+    if (msg.role !== 'system') appendMessageDOM(msg.role, msg.content, false, msg.time);
+  });
+  scrollToBottom();
+}
+
+function createWelcomeState() {
+  const div = document.createElement('div');
+  div.className = 'welcome-state';
+  div.innerHTML = `<div class="welcome-icon">🥦</div><h3>Your AI Nutrition Coach is ready</h3><p style="max-width:320px">Ask me anything about nutrition, meals, calories, or your fitness goals.</p>`;
+  return div;
+}
+
+function escHtml(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function formatAIText(text) {
+  return text
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    .replace(/^### (.+)$/gm, '<h4>$1</h4>')
+    .replace(/^## (.+)$/gm, '<h3>$1</h3>')
+    .replace(/^- (.+)$/gm, '<li>$1</li>')
+    .replace(/(<li>.*<\/li>)/gs, '<ul>$1</ul>')
+    .replace(/\n\n/g, '</p><p>')
+    .replace(/^(?!<[hlu])/gm, '')
+    .replace(/\n/g, '<br/>');
+}
+
+function appendMessageDOM(role, content, animate = true, time = null) {
+  const ws = chatMessages.querySelector('.welcome-state');
+  if (ws) ws.remove();
+
+  const ts = time || new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+  const wrap = document.createElement('div');
+  wrap.className = `message-wrap ${role}`;
+  if (animate) wrap.style.animation = 'fadeIn 0.3s ease';
+
+  const isAI = role === 'assistant';
+  const avatarHtml = isAI
+    ? `<div class="msg-avatar ai">N</div>`
+    : `<div class="msg-avatar user">U</div>`;
+
+  let bubbleContent = isAI ? `<div class="ai-content">${formatAIText(content)}</div>` : escHtml(content).replace(/\n/g,'<br/>');
+
+  wrap.innerHTML = `
+    <div class="message-meta">
+      ${avatarHtml}
+      <span>${isAI ? 'NutriAI' : 'You'}</span>
+      <span>${ts}</span>
+    </div>
+    <div class="message-bubble">${bubbleContent}</div>
+  `;
+  chatMessages.appendChild(wrap);
+  scrollToBottom();
+}
+
+function showTypingIndicator() {
+  const wrap = document.createElement('div');
+  wrap.className = 'message-wrap assistant';
+  wrap.id = 'typingIndicator';
+  wrap.innerHTML = `
+    <div class="message-meta"><div class="msg-avatar ai">N</div><span>NutriAI</span></div>
+    <div class="typing-indicator">
+      <div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>
+    </div>
+  `;
+  chatMessages.appendChild(wrap);
+  scrollToBottom();
+}
+
+function removeTypingIndicator() {
+  const t = $('typingIndicator');
+  if (t) t.remove();
+}
+
+function scrollToBottom() { chatMessages.scrollTop = chatMessages.scrollHeight; }
+
+async function sendMessage() {
+  const text = chatInput.value.trim();
+  if (!text || state.isTyping) return;
+
+  if (!state.currentChatId) startNewChat();
+
+  const chat = state.chats[state.currentChatId];
+  const userTime = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+
+  if (chat.messages.filter(m => m.role === 'user').length === 0) {
+    chat.title = text.substring(0, 38) + (text.length > 38 ? '…' : '');
+  }
+
+  chat.messages.push({ role: 'user', content: text, time: userTime });
+  chatInput.value = '';
+  autoResizeTextarea();
+  appendMessageDOM('user', text, true, userTime);
+  saveChats();
+  renderChatHistory();
+
+  state.isTyping = true;
+  sendBtn.disabled = true;
+  $('chatStatusBar').textContent = 'NutriAI is thinking...';
+  showTypingIndicator();
+
+  try {
+    const systemMsg = { role: 'system', content: buildSystemPrompt() };
+    const conversationMessages = [systemMsg, ...chat.messages.filter(m => m.role !== 'system').map(m => ({ role: m.role, content: m.content }))];
+    const reply = await askNutritionAI(conversationMessages);
+
+    removeTypingIndicator();
+    const aiTime = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+    chat.messages.push({ role: 'assistant', content: reply, time: aiTime });
+    appendMessageDOM('assistant', reply, true, aiTime);
+    saveChats();
+  } catch (err) {
+    removeTypingIndicator();
+    appendMessageDOM('assistant', `⚠️ ${err.message}`, true);
+    showToast(err.message, 'error');
+  } finally {
+    state.isTyping = false;
+    sendBtn.disabled = false;
+    $('chatStatusBar').textContent = 'Ready to help with your nutrition goals';
+  }
+}
+
+function sendSuggestion(text) { chatInput.value = text; sendMessage(); }
+
+function autoResizeTextarea() {
+  chatInput.style.height = 'auto';
+  chatInput.style.height = Math.min(chatInput.scrollHeight, 140) + 'px';
+}
+
+// ============================================================
+// 8. MEAL ANALYZER
+// ============================================================
+async function analyzeMeal() {
+  const meal = $('mealInput').value.trim();
+  if (!meal) { showToast('Please describe your meal first', 'error'); return; }
+
+  const btn = $('analyzeMealBtn');
+  btn.disabled = true;
+  btn.textContent = '⏳ Analyzing...';
+  $('analyzerResult').innerHTML = renderAnalyzerSkeleton();
+
+  const systemPrompt = buildSystemPrompt();
+  const userPrompt = `Please analyze the following meal and provide a detailed nutrition breakdown in this EXACT JSON format only (no extra text, just valid JSON):
+{
+  "meal_name": "short descriptive name",
+  "calories": number,
+  "protein": number,
+  "carbs": number,
+  "fat": number,
+  "fiber": number,
+  "key_nutrients": ["nutrient1", "nutrient2", "nutrient3"],
+  "health_score": number_1_to_10,
+  "positives": ["point1", "point2"],
+  "improvements": ["point1", "point2"],
+  "suggestions": ["suggestion1", "suggestion2"]
+}
+
+Meal: ${meal}
+
+Remember: provide ONLY valid JSON. All nutrition values are estimates.`;
+
+  try {
+    const raw = await askNutritionAI([
+      { role: 'system', content: systemPrompt },
+      { role: 'user', content: userPrompt }
+    ]);
+
+    let data;
+    try {
+      const jsonMatch = raw.match(/\{[\s\S]*\}/);
+      if (!jsonMatch) throw new Error('No JSON found');
+      data = JSON.parse(jsonMatch[0]);
+    } catch {
+      $('analyzerResult').innerHTML = `<div class="card"><div class="card-title">Nutrition Analysis</div><div style="margin-top:12px;font-size:0.9rem;line-height:1.7">${formatAIText(raw)}</div></div>`;
+      return;
+    }
+
+    renderAnalysisResult(data, meal);
+  } catch (err) {
+    $('analyzerResult').innerHTML = `<div class="card"><div style="color:var(--red);font-weight:600">⚠️ ${err.message}</div></div>`;
+    showToast(err.message, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '🔍 Analyze Meal';
+  }
+}
+
+function renderAnalyzerSkeleton() {
+  return `<div class="card">
+    <div class="skeleton" style="height:20px;width:60%;margin-bottom:16px"></div>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:20px">
+      ${Array(5).fill('<div class="skeleton" style="height:80px;border-radius:12px"></div>').join('')}
+    </div>
+    <div class="skeleton" style="height:10px;margin-bottom:20px"></div>
+    <div class="skeleton" style="height:16px;width:80%;margin-bottom:8px"></div>
+    <div class="skeleton" style="height:16px;width:70%;margin-bottom:8px"></div>
+    <div class="skeleton" style="height:16px;width:65%"></div>
+  </div>`;
+}
+
+function renderAnalysisResult(d, mealText) {
+  const scoreColor = d.health_score >= 7 ? '#10b981' : d.health_score >= 5 ? '#f59e0b' : '#ef4444';
+  const positives    = (d.positives    || []).map(p => `<span class="tag tag-green">✓ ${escHtml(p)}</span>`).join('');
+  const improvements = (d.improvements || []).map(i => `<span class="tag tag-orange">→ ${escHtml(i)}</span>`).join('');
+  const suggestions  = (d.suggestions  || []).map(s => `<span class="tag tag-blue">💡 ${escHtml(s)}</span>`).join('');
+  const nutrients    = (d.key_nutrients || []).map(n => `<span class="tag tag-green">${escHtml(n)}</span>`).join('');
+
+  $('analyzerResult').innerHTML = `
+    <div class="nutrition-result">
+      <div class="result-header">
+        <div>
+          <h3>${escHtml(d.meal_name || 'Your Meal')}</h3>
+          <p>${escHtml(mealText.substring(0, 80))}${mealText.length > 80 ? '...' : ''}</p>
+        </div>
+        <div style="margin-left:auto;text-align:center">
+          <div style="font-size:2rem;font-weight:800">${d.health_score || '?'}<span style="font-size:1rem;opacity:0.7">/10</span></div>
+          <div style="font-size:0.72rem;opacity:0.8">Health Score</div>
+        </div>
+      </div>
+      <div class="result-body">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+          <span style="font-size:0.82rem;font-weight:700;color:var(--text2)">MACRONUTRIENTS</span>
+          <span class="estimated-badge">ESTIMATED</span>
+        </div>
+        <div class="macro-grid">
+          ${[
+            ['🔥', d.calories, 'kcal', 'Calories', '#f59e0b'],
+            ['💪', d.protein,  'g',    'Protein',  '#10b981'],
+            ['🌾', d.carbs,    'g',    'Carbs',    '#3b82f6'],
+            ['🥑', d.fat,      'g',    'Fat',      '#7c3aed'],
+            ['🌿', d.fiber,    'g',    'Fiber',    '#059669']
+          ].map(([icon, val, unit, label, color]) => `
+            <div class="macro-item">
+              <div style="font-size:1.2rem;margin-bottom:4px">${icon}</div>
+              <div class="macro-item-value" style="color:${color}">${val || 0}<span class="macro-item-unit">${unit}</span></div>
+              <div class="macro-item-label">${label}</div>
+            </div>
+          `).join('')}
+        </div>
+
+        <div class="health-score-wrap">
+          <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+            <span style="font-size:0.82rem;font-weight:700;color:var(--text2)">HEALTH SCORE</span>
+            <span style="font-size:0.82rem;font-weight:700;color:${scoreColor}">${d.health_score}/10</span>
+          </div>
+          <div class="health-score-bar">
+            <div class="health-score-fill" style="width:${(d.health_score||0)*10}%;background:${scoreColor}"></div>
+          </div>
+        </div>
+
+        ${nutrients    ? `<div class="result-section"><div class="result-section-title">Key Nutrients</div>${nutrients}</div>` : ''}
+        ${positives    ? `<div class="result-section"><div class="result-section-title">✅ What's Great</div>${positives}</div>` : ''}
+        ${improvements ? `<div class="result-section"><div class="result-section-title">📈 Areas to Improve</div>${improvements}</div>` : ''}
+        ${suggestions  ? `<div class="result-section"><div class="result-section-title">💡 Suggestions</div>${suggestions}</div>` : ''}
+
+        <div style="margin-top:16px;padding:10px 14px;background:var(--accent-light);border-radius:8px;font-size:0.78rem;color:var(--accent2)">
+          ⚠️ All nutritional values are <strong>estimates</strong> based on typical portion sizes. Actual values may vary.
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// ============================================================
+// 9. MEAL PLANNER
+// ============================================================
+async function generateMealPlan() {
+  const btn = $('generatePlanBtn');
+  btn.disabled = true;
+  btn.textContent = '⏳ Generating...';
+
+  const profileInfo = state.profile
+    ? `Profile: ${state.profile.age || '?'}yo ${state.profile.gender || ''}, ${state.profile.weight || '?'}kg, Goal: ${goalLabel(state.profile.goal)}, Diet: ${dietLabel(state.profile.diet)}, Allergies: ${state.profile.allergies?.join(', ') || 'none'}, Preferences: ${state.profile.prefs || 'none'}`
+    : 'No profile set, create a balanced general meal plan for an average adult.';
+
+  const targets = state.profile ? calcTargets(state.profile) : { calories: 2000, protein: 120, carbs: 230, fat: 65 };
+
+  $('mealPlanContent').innerHTML = renderPlanSkeleton();
+
+  const prompt = `${profileInfo}. Daily targets: ~${targets.calories} kcal, ~${targets.protein}g protein, ~${targets.carbs}g carbs, ~${targets.fat}g fat.
+
+Create a complete, personalized daily meal plan. Return ONLY valid JSON in this exact format:
+{
+  "meals": [
+    {
+      "time": "Breakfast",
+      "name": "meal name",
+      "items": ["item1", "item2"],
+      "calories": number,
+      "protein": number,
+      "carbs": number,
+      "fat": number
+    }
+  ],
+  "total_calories": number,
+  "total_protein": number,
+  "total_carbs": number,
+  "total_fat": number
+}
+
+Include: Breakfast, Morning Snack, Lunch, Evening Snack, Dinner. All values are estimates. Match dietary preferences strictly.`;
+
+  try {
+    const raw = await askNutritionAI([
+      { role: 'system', content: buildSystemPrompt() },
+      { role: 'user', content: prompt }
+    ]);
+
+    let data;
+    try {
+      const jsonMatch = raw.match(/\{[\s\S]*\}/);
+      data = JSON.parse(jsonMatch[0]);
+    } catch {
+      $('mealPlanContent').innerHTML = `<div class="card"><div class="card-title mb-2">Your Meal Plan</div><div style="font-size:0.9rem;line-height:1.8">${formatAIText(raw)}</div></div>`;
+      return;
+    }
+    renderMealPlan(data);
+  } catch (err) {
+    $('mealPlanContent').innerHTML = `<div class="card"><div style="color:var(--red)">⚠️ ${err.message}</div></div>`;
+    showToast(err.message, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '✨ Generate My Meal Plan';
+  }
+}
+
+function renderPlanSkeleton() {
+  return Array(5).fill(0).map(() => `
+    <div class="meal-plan-card" style="margin-bottom:14px">
+      <div class="meal-plan-header"><div class="skeleton" style="height:18px;width:40%"></div></div>
+      <div class="meal-plan-body">
+        <div class="skeleton" style="height:14px;width:90%;margin-bottom:8px"></div>
+        <div class="skeleton" style="height:14px;width:70%"></div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderMealPlan(data) {
+  const meals = data.meals || [];
+  const mealTimeIcons = { Breakfast:'🌅', 'Morning Snack':'☕', Lunch:'☀️', 'Evening Snack':'🍎', Dinner:'🌙' };
+
+  const planHTML = meals.map(meal => `
+    <div class="meal-plan-card">
+      <div class="meal-plan-header">
+        <span style="font-size:1.3rem">${mealTimeIcons[meal.time] || '🍽'}</span>
+        <span class="meal-time-badge">${escHtml(meal.time)}</span>
+        <span class="meal-name">${escHtml(meal.name)}</span>
+        <span class="meal-kcal">🔥 ${meal.calories} kcal</span>
+      </div>
+      <div class="meal-plan-body">
+        <div class="meal-items">${(meal.items || []).map(i => `• ${escHtml(i)}`).join('<br/>')}</div>
+        <div class="meal-macros">
+          <div class="meal-macro-item"><div class="meal-macro-val" style="color:#10b981">${meal.protein}g</div><div class="meal-macro-lbl">Protein</div></div>
+          <div class="meal-macro-item"><div class="meal-macro-val" style="color:#3b82f6">${meal.carbs}g</div><div class="meal-macro-lbl">Carbs</div></div>
+          <div class="meal-macro-item"><div class="meal-macro-val" style="color:#7c3aed">${meal.fat}g</div><div class="meal-macro-lbl">Fat</div></div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  const totalHTML = `
+    <div class="plan-total">
+      <div class="plan-total-label">📊 Daily Totals <span class="estimated-badge">ESTIMATED</span></div>
+      <div class="plan-total-stats">
+        <div class="plan-total-item"><div class="plan-total-val">🔥 ${data.total_calories}</div><div class="plan-total-lbl">kcal</div></div>
+        <div class="plan-total-item"><div class="plan-total-val">💪 ${data.total_protein}g</div><div class="plan-total-lbl">Protein</div></div>
+        <div class="plan-total-item"><div class="plan-total-val">🌾 ${data.total_carbs}g</div><div class="plan-total-lbl">Carbs</div></div>
+        <div class="plan-total-item"><div class="plan-total-val">🥑 ${data.total_fat}g</div><div class="plan-total-lbl">Fat</div></div>
+      </div>
+    </div>
+    <div class="disclaimer-box" style="margin-top:12px">
+      <span>ℹ️</span><span>All nutritional values are estimates. Actual values may vary based on portion sizes and preparation methods.</span>
+    </div>
+  `;
+
+  $('mealPlanContent').innerHTML = `<div class="meal-plan-grid">${planHTML}</div>${totalHTML}`;
+}
+
+// ============================================================
+// 10. DASHBOARD
+// ============================================================
+function updateDashboard() {
+  if (!state.profile) {
+    ['dashCalories','dashProtein','dashCarbs','dashFat','dashWater','dashBMR'].forEach(id => {
+      const el = $(id); if (el) el.textContent = '—';
+    });
+    return;
+  }
+  const p = state.profile;
+  const t = calcTargets(p);
+  $('dashCalories').textContent = t.calories.toLocaleString();
+  $('dashProtein').textContent  = t.protein;
+  $('dashCarbs').textContent    = t.carbs;
+  $('dashFat').textContent      = t.fat;
+  $('dashWater').textContent    = t.water;
+  $('dashBMR').textContent      = t.bmr.toLocaleString();
+
+  const goalEl = $('goalBadge');
+  if (goalEl) goalEl.textContent = goalLabel(p.goal);
+
+  setTimeout(() => {
+    const max = t.calories;
+    setProgress('calProgress',  t.calories / (max * 1.1) * 100);
+    setProgress('proProgress',  t.protein  / 200 * 100);
+    setProgress('carbProgress', t.carbs    / 350 * 100);
+    setProgress('fatProgress',  t.fat      / 100 * 100);
+  }, 300);
+
+  const sub = $('dashWelcomeSub');
+  if (sub) sub.textContent = `Welcome back! Goal: ${goalLabel(p.goal)} · ${activityLabel(p.activity)}`;
+}
+
+function setProgress(id, pct) {
+  const el = $(id);
+  if (el) el.style.width = Math.min(Math.max(pct, 2), 100) + '%';
+}
+
+// ============================================================
+// 11. NAVIGATION
+// ============================================================
+function navigate(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const target = $('page-' + page);
+  if (target) target.classList.add('active');
+
+  document.querySelectorAll('.nav-link, .mobile-nav-link').forEach(link => {
+    link.classList.toggle('active', link.dataset.page === page);
+  });
+
+  if (page === 'home') updateDashboard();
+  if (page === 'profile') loadProfileForm();
+  if (page === 'chat') {
+    setTimeout(() => chatInput && chatInput.focus(), 100);
+    const isMobile = window.innerWidth <= 768;
+    const sbt = $('sidebarToggleBtn');
+    if (sbt) sbt.style.display = isMobile ? 'flex' : 'none';
+  }
+  window.scrollTo(0, 0);
+}
+
+// ============================================================
+// 12. THEME
+// ============================================================
+function initTheme() { setTheme(loadFromLS('theme') || 'light'); }
+function setTheme(t) {
+  state.theme = t;
+  document.documentElement.setAttribute('data-theme', t);
+  const btn = $('themeToggle');
+  if (btn) btn.textContent = t === 'dark' ? '☀️' : '🌙';
+  saveToLS('theme', t);
+}
+function toggleTheme() { setTheme(state.theme === 'dark' ? 'light' : 'dark'); }
+
+// ============================================================
+// 13. TOAST
+// ============================================================
+function showToast(message, type = 'info') {
+  const icons = { success: '✅', error: '❌', info: 'ℹ️' };
+  const container = $('toast-container');
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.innerHTML = `<span class="toast-icon">${icons[type]}</span><span>${escHtml(message)}</span>`;
+  container.appendChild(toast);
+  setTimeout(() => {
+    toast.style.animation = 'toastOut 0.3s ease forwards';
+    setTimeout(() => toast.remove(), 300);
+  }, 3500);
+}
+
+// ============================================================
+// 14. PROFILE
+// ============================================================
+function saveProfile(data) { state.profile = data; saveToLS('profile', data); }
+function loadProfile() {
+  const saved = loadFromLS('profile');
+  if (saved) { state.profile = saved; return true; }
+  return false;
+}
+
+function loadProfileForm() {
+  if (!state.profile) return;
+  const p = state.profile;
+  const setVal = (id, val) => { const el = $(id); if (el && val) el.value = val; };
+  setVal('p-age', p.age); setVal('p-gender', p.gender); setVal('p-height', p.height);
+  setVal('p-weight', p.weight); setVal('p-activity', p.activity); setVal('p-prefs', p.prefs);
+
+  document.querySelectorAll('input[name="p-goal"]').forEach(r   => { r.checked = r.value === p.goal; });
+  document.querySelectorAll('input[name="p-diet"]').forEach(r   => { r.checked = r.value === p.diet; });
+  document.querySelectorAll('input[name="p-allergy"]').forEach(r => { r.checked = (p.allergies || []).includes(r.value); });
+
+  renderProfileSummary();
+}
+
+function renderProfileSummary() {
+  const p = state.profile;
+  if (!p) return;
+  const t = calcTargets(p);
+  $('profileSummary').innerHTML = `
+    <div style="text-align:center;padding:16px 0">
+      <div style="font-size:3rem;margin-bottom:8px">👤</div>
+      <div style="font-weight:800;font-size:1.1rem">${p.age || '?'}yo ${p.gender ? (p.gender[0].toUpperCase() + p.gender.slice(1)) : ''}</div>
+      <div style="color:var(--text2);font-size:0.85rem;margin-top:4px">${p.height || '?'}cm · ${p.weight || '?'}kg</div>
+    </div>
+    <div class="divider"></div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      ${summaryRow('🎯 Goal',      goalLabel(p.goal))}
+      ${summaryRow('🥗 Diet',      dietLabel(p.diet))}
+      ${summaryRow('⚡ Activity',  activityLabel(p.activity))}
+      ${summaryRow('🔥 Calories',  t.calories + ' kcal')}
+      ${summaryRow('💪 Protein',   t.protein  + 'g')}
+      ${p.allergies?.length ? summaryRow('⚠️ Allergies', p.allergies.join(', ')) : ''}
+    </div>
+  `;
+}
+
+function summaryRow(label, value) {
+  return `<div style="display:flex;justify-content:space-between;font-size:0.85rem;padding:6px 0;border-bottom:1px solid var(--border)">
+    <span style="color:var(--text2)">${label}</span>
+    <span style="font-weight:600">${escHtml(value)}</span>
+  </div>`;
+}
+
+// ============================================================
+// QUICK ACTIONS
+// ============================================================
+function quickAction(type) {
+  const prompts = {
+    analyze:     () => { navigate('analyzer'); },
+    protein:     'Based on my profile, how much protein should I eat daily, and what are the best sources?',
+    calorie:     'Give me a detailed calorie breakdown and guidance for my fitness goal.',
+    mealplan:    () => { navigate('mealplan'); setTimeout(generateMealPlan, 200); },
+    alternatives:'Give me 5 healthy food alternatives I can make smarter swaps with, suited to my dietary preference.',
+    preworkout:  'What are the best pre-workout meals and snacks for my goal and diet type?',
+    postworkout: 'What should I eat after a workout for optimal recovery? Consider my profile and goals.',
+    tips:        'Give me 7 practical, personalized nutrition tips based on my profile and goals.'
+  };
+
+  const action = prompts[type];
+  if (typeof action === 'function') { action(); return; }
+  if (action) {
+    navigate('chat');
+    setTimeout(() => {
+      if (!state.currentChatId) startNewChat();
+      chatInput.value = action;
+      sendMessage();
+    }, 100);
+  }
+}
+
+// ============================================================
+// MOBILE NAV
+// ============================================================
+function toggleMobileNav() { $('mobileNav').classList.toggle('open'); }
+function closeMobileNav(e) {
+  if (!e || e.target === $('mobileNav')) $('mobileNav').classList.remove('open');
+}
+function toggleSidebar() { $('chatSidebar').classList.toggle('mobile-open'); }
+
+// ============================================================
+// 15. EVENT LISTENERS
+// ============================================================
+function initEventListeners() {
+  $('themeToggle').addEventListener('click', toggleTheme);
+  $('hamburgerBtn').addEventListener('click', toggleMobileNav);
+
+  chatInput.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+  });
+  chatInput.addEventListener('input', autoResizeTextarea);
+
+  $('onboardingForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const goalRadio = document.querySelector('input[name="ob-goal"]:checked');
+    const dietRadio = document.querySelector('input[name="ob-diet"]:checked');
+    if (!goalRadio) { showToast('Please select a fitness goal', 'error'); return; }
+    if (!dietRadio) { showToast('Please select a dietary preference', 'error'); return; }
+    const profile = {
+      age:      parseInt($('ob-age').value),
+      gender:   $('ob-gender').value,
+      height:   parseFloat($('ob-height').value),
+      weight:   parseFloat($('ob-weight').value),
+      activity: $('ob-activity').value,
+      goal:     goalRadio.value,
+      diet:     dietRadio.value,
+      allergies: [],
+      prefs:    ''
+    };
+    saveProfile(profile);
+    $('onboarding').style.display = 'none';
+    updateDashboard();
+    showToast('Welcome to NutriAI! Your profile is set up.', 'success');
+    navigate('home');
+  });
+
+  $('profileForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const goalRadio = document.querySelector('input[name="p-goal"]:checked');
+    const dietRadio = document.querySelector('input[name="p-diet"]:checked');
+    const allergies = [...document.querySelectorAll('input[name="p-allergy"]:checked')].map(c => c.value);
+
+    const profile = {
+      age:      parseInt($('p-age').value)       || state.profile?.age,
+      gender:   $('p-gender').value              || state.profile?.gender,
+      height:   parseFloat($('p-height').value)  || state.profile?.height,
+      weight:   parseFloat($('p-weight').value)  || state.profile?.weight,
+      activity: $('p-activity').value            || state.profile?.activity,
+      goal:     goalRadio?.value                 || state.profile?.goal,
+      diet:     dietRadio?.value                 || state.profile?.diet,
+      allergies,
+      prefs:    $('p-prefs').value
+    };
+    saveProfile(profile);
+    renderProfileSummary();
+    updateDashboard();
+    showToast('Profile saved successfully! ✅', 'success');
+  });
+}
+
+// ============================================================
+// 16. INITIALIZATION
+// ============================================================
+function init() {
+  initTheme();
+  loadChats();
+  const hasProfile = loadProfile();
+
+  if (hasProfile) {
+    $('onboarding').style.display = 'none';
+    updateDashboard();
+    navigate('home');
+  } else {
+    $('onboarding').style.display = 'flex';
+  }
+
+  const chatIds = Object.keys(state.chats);
+  if (chatIds.length > 0) {
+    state.currentChatId = chatIds[chatIds.length - 1];
+  }
+
+  renderChatHistory();
+  initEventListeners();
+
+  window.addEventListener('resize', () => {
+    const sbt = $('sidebarToggleBtn');
+    if (sbt) sbt.style.display = window.innerWidth <= 768 ? 'flex' : 'none';
+  });
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
